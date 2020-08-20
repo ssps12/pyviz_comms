@@ -68,7 +68,7 @@ jobs:
         - pip install "pyctdev>=0.5"
         - conda install -c numba -c pyviz datashader
         - pip install "jupyterlab>=3.0.0a11"
-        - apt-get install chromium-browser
+        - sudo apt-get install chromium-browser
       script:
         - npm install
         - npm run build
