@@ -31,21 +31,6 @@ jobs:
   include:
     ########## DEVELOPER INSTALL ##########
 
-    - &default
-      stage: test_pyviz_comms
-      env: DESC="dev test_flakes"
-      before_install:
-        - pip install pyctdev && doit miniconda_install && pip uninstall -y doit pyctdev
-        - export PATH="$HOME/miniconda/bin:$PATH" && hash -r
-        - conda config --set always_yes True
-        - conda install -c pyviz "pyctdev>=0.5" && doit ecosystem_setup
-      install:
-        - doit env_create $CHANS_DEV --python=$PYENV_VERSION
-        - source activate test-environment
-        - doit develop_install $CHANS_DEV -o all
-        - doit env_capture
-      script: doit test_flakes
-
     - stage: test_jlab
       before_install:
         - pip install pyctdev && doit miniconda_install && pip uninstall -y doit pyctdev
