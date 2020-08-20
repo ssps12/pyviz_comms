@@ -66,6 +66,32 @@ jobs:
         - python -m jupyterlab.browser_check
       after_failure:
         - cat /tmp/jupyterlab-debug-*.log
+        
+    - stage: test_jlab
+      arch: arm64
+      before_install:
+        - pip install pyctdev
+        - wget -q "https://github.com/conda-forge/miniforge/releases/download/4.8.2-1/Miniforge3-4.8.2-1-Linux-aarch64.sh" -O miniconda.sh
+        - chmod +x miniconda.sh && ./miniconda.sh -b -p $HOME/miniconda
+        - export PATH="$HOME/miniconda/bin:$PATH" && hash -r
+        - conda config --set always_yes True && doit ecosystem_setup
+      install:
+        - conda create -n test-environment python=$PYTHON_VERSION
+        - source activate test-environment
+        - conda install conda matplotlib
+        - conda install nodejs notebook
+        - pip install "pyctdev>=0.5"
+        - conda install -c numba -c pyviz datashader
+        - pip install "jupyterlab>=3.0.0a11"
+      script:
+        - npm install
+        - npm run build
+        - jupyter labextension install @jupyter-widgets/jupyterlab-manager
+        - jupyter labextension install --no-build
+        - NODE_OPTIONS=--max-old-space-size=16000 jupyter lab build --minimize=False
+        - python -m jupyterlab.browser_check
+      after_failure:
+        - cat /tmp/jupyterlab-debug-*.log  
 
     ########## END-USER PACKAGES ##########
 
