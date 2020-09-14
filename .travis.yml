@@ -67,7 +67,7 @@ jobs:
         - conda install nodejs notebook
         - pip install "pyctdev>=0.5"
         - conda install -c numba -c pyviz datashader
-        - pip install "jupyterlab>=2.2.8"
+        - pip install "jupyterlab>=3.0.0b4"
         - sudo apt-get install chromium-browser
       script:
         - npm install
